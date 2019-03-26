@@ -59,8 +59,17 @@ class FuzzyRule:
         """
 
         fuzzified_inputs_for_rule = []
+        
+        for antecedent in self.antecedents:
+            value = crisp_inputs[antecedent.lv_name.name]
 
-        assert False, "TODO student"
+            fuzzified_input_for_rule = antecedent.lv_name[antecedent.lv_value].fuzzify(value)
+            
+            if antecedent.is_not:
+                fuzzified_input_for_rule = 1 - fuzzified_input_for_rule
+            
+            fuzzified_inputs_for_rule.append(fuzzified_input_for_rule)
+        
         return fuzzified_inputs_for_rule
 
     def activate(self, fuzzified_inputs):
@@ -103,7 +112,7 @@ class FuzzyRule:
 
             in_values = deepcopy(ling_value.in_values)  # FIXME deepcopy needed?
             mf_values = [impl_func([val, antecedents_activation]) for
-                         val in ling_value.mf_values]
+                            val in ling_value.mf_values]
 
             # lv_name.name is the name of the linguistic variable, e.g.
             # "temperature"
@@ -120,10 +129,10 @@ class FuzzyRule:
 
         ants_text = " {} ".format(self._ant_act_func[1]).join(
             ["{} is {}".format(a.lv_name.name, a.lv_value) for a in
-             self.antecedents])
+                self.antecedents])
 
         cons_text = " {} ".format(",").join(
             ["{} is {}".format(c.lv_name.name, c.lv_value) for c in
-             self.consequents])
+                self.consequents])
 
         return text.format(ants_text, cons_text)
