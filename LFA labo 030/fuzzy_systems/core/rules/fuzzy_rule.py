@@ -61,9 +61,9 @@ class FuzzyRule:
         fuzzified_inputs_for_rule = []
         
         for antecedent in self.antecedents:
-            value = crisp_inputs[antecedent.lv_name.name]
+            crisp_input = crisp_inputs[antecedent.lv_name.name]
 
-            fuzzified_input_for_rule = antecedent.lv_name[antecedent.lv_value].fuzzify(value)
+            fuzzified_input_for_rule = antecedent.lv_name[antecedent.lv_value].fuzzify(crisp_input)
             
             if antecedent.is_not:
                 fuzzified_input_for_rule = 1 - fuzzified_input_for_rule
